@@ -1,4 +1,4 @@
-# Predict_Stock_for_Invest
+# Predict_Stock_and_Crypto_for_Invest
 
 Пока проект в процессе работы и не закончен, то здесь не будет описания.
 
