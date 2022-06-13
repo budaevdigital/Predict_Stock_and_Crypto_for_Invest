@@ -1,17 +1,17 @@
+# graph/graphics_stock.py
+
 import datetime
 import matplotlib.pyplot as plt
 import pandas as pd
-
+# Обновляем директорию для импорта модуля
 from os import path
 import sys
-# Обновляем директорию для импорта модуля
 current = path.dirname(path.realpath(__file__))
 parent = path.dirname(current)
 sys.path.append(parent)
 from config import settings
 
-# специальное отображение графиков для pyplot fivethirtyeight
-plt.style.use('fivethirtyeight')
+plt.style.use(settings.PYPLOT_SET_GRAPH)
 
 def EMA_or_SMA(moving_average: str, days_first: int,
                days_second: int, df) -> tuple:
@@ -100,26 +100,28 @@ def stock_to_graph(df, from_date, today_date, stock: str,
     plt.title(str(stock) + ' график ' + function)
     plt.xlabel(from_date + ' - ' + today_date)
     plt.ylabel('Цена')
-
-    match function:
-        case 'EMA' | 'SMA':
-            label_first = function + (str(days_first))
-            label_second = function + (str(days_second))
-            data_to_graph[label_first], data_to_graph[label_second] = EMA_or_SMA(
-                moving_average=function, days_first=days_first,
-                days_second=days_second, df=df)
-            plt.plot(data_to_graph['Stock'], label=stock, alpha=1, linewidth=3)
-            plt.plot(data_to_graph[label_first], label=label_first, alpha=0.85)
-            plt.plot(data_to_graph[label_second],
-                     label=label_second, alpha=0.85)
-        case 'High' | 'Low':
-            time_delta = datetime.timedelta(days=15)
-            dates, pivots = levels(df=df, levels=function)
-            plt.plot(df[function], label=stock, alpha=0.35, linewidth=3)
-            for index in range(len(pivots)):
-                plt.plot_date([dates[index], dates[index]+time_delta],
-                              [pivots[index], pivots[index]], linewidth=3,
-                              fmt='-', alpha=1)
+    try:
+        match function:
+            case 'EMA' | 'SMA':
+                label_first = function + (str(days_first))
+                label_second = function + (str(days_second))
+                data_to_graph[label_first], data_to_graph[label_second] = EMA_or_SMA(
+                    moving_average=function, days_first=days_first,
+                    days_second=days_second, df=df)
+                plt.plot(data_to_graph['Stock'], label=stock, alpha=1, linewidth=3)
+                plt.plot(data_to_graph[label_first], label=label_first, alpha=0.85)
+                plt.plot(data_to_graph[label_second],
+                        label=label_second, alpha=0.85)
+            case 'High' | 'Low':
+                time_delta = datetime.timedelta(days=15)
+                dates, pivots = levels(df=df, levels=function)
+                plt.plot(df[function], label=stock, alpha=0.35, linewidth=3)
+                for index in range(len(pivots)):
+                    plt.plot_date([dates[index], dates[index]+time_delta],
+                                [pivots[index], pivots[index]], linewidth=3,
+                                fmt='-', alpha=1)
+    except Exception as error:
+        settings.logging.error(f'Ошибка ({error}) при построении графиков') 
     plt.legend(loc = 'best')
     name_pic = function + '.png'
     current_img = path.join(settings.IMG_DIR, name_pic)

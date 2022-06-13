@@ -2,6 +2,15 @@ import investpy
 import pandas as pd
 import requests
 
+# Обновляем директорию для импорта модуля
+from os import path
+from sys import path as sys_path
+current = path.dirname(path.realpath(__file__))
+parent = path.dirname(current)
+sys_path.append(parent)
+
+from config import settings
+
 def get_all_cryptos() -> dict[str, str]:
     """
     Получает список доступных криптовалют в виде ассоциативного массива (словаря)
@@ -43,7 +52,7 @@ def get_historical_data(symbol: str,
                     to_date=today_date)
                 return df                    
             except Exception as error:
-                print(error)
+                settings.logging.error(f'Ошибка ({error}) при запросе исторических данных с investpy') 
                 df = None
                 return df
 
@@ -58,8 +67,9 @@ def get_price_from_binance(symbol: str) -> float:
         ConnectionError: в случае, если сайт будет недоступен
     """    
     symbol = symbol.upper()
-    response = requests.get(f'https://api.binance.com/api/v3/ticker/price?symbol={symbol}USDT').json()
-    if response.status_code != 200:
-        raise ConnectionError (f'Проблемы с соединением: код ответа {response.status_code}!')  
+    try:
+        response = requests.get(f'https://api.binance.com/api/v3/ticker/price?symbol={symbol}USDT').json()
+    except Exception as error:
+        settings.logging.error(f'Ошибка ({error}) при парсинге цен на binance') 
     result = format(float(response['price']), '.2f')
     return result
