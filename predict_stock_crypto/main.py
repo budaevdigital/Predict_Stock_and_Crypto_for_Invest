@@ -1,4 +1,4 @@
-# mail.py
+# main.py
 
 from telegram.ext import (ConversationHandler, 
                           MessageHandler, CommandHandler, 
