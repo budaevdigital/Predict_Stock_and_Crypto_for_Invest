@@ -6,8 +6,6 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-
-
 # Выбираем абсолютный путь - берём за основу этот файл и поднимаемся на две директории выше
 BASE_DIR = Path(__file__).resolve().parent.parent
 IMG_DIR = os.path.join(BASE_DIR, 'img')
@@ -32,7 +30,6 @@ COUNTRY = 'United States'
 
 # специальное отображение графиков для pyplot fivethirtyeight
 PYPLOT_SET_GRAPH = 'fivethirtyeight'
-
 
 # Загрузим переменные окружения
 load_dotenv()
