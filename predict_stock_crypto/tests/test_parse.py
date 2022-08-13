@@ -3,8 +3,8 @@
 import unittest
 from os import path
 from sys import path as sys_path
-from pathlib import Path
 import pandas as pd
+import logging
 
 # Обновляем директорию для импорта встроенных модулей
 current = path.dirname(path.realpath(__file__))
@@ -17,13 +17,8 @@ from parse import predict_parse
 
 def setUpModule():
     """Вызывается один раз перед всеми классами, которые есть в файле."""
-    BASE_DIR = Path(__file__).resolve().parent.parent
-    CONFIG_DIR = path.join(BASE_DIR, "config")
-    LOGGING_DIR = path.join(CONFIG_DIR, "logging")
-    LOGGING = path.join(LOGGING_DIR, "logfile.log")
-    if not LOGGING:
-        with open(LOGGING, "w") as file:
-            file.write(" ")
+    # Don't show logging messages while testing
+    logging.disable(logging.CRITICAL)
 
 
 class TestParse(unittest.TestCase):
