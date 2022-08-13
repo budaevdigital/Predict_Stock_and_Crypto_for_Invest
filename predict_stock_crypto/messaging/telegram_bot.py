@@ -15,7 +15,11 @@ from config import settings, date_time
 from messaging import navigation as buttons
 from database import helpful_func as base
 from parse.predict_parse import get_predict_price_1_to_14_days
-from parse.parse import get_price_from_binance, get_historical_data
+from parse.parse import (
+    get_price_from_binance,
+    get_historical_data,
+    get_all_cryptos,
+)
 from graph import graphics_stock
 
 watchlist_position = settings.WATCHLIST_POSITION
@@ -60,6 +64,16 @@ def first_starting_messaging(update, context) -> None:
     user_first_name = update.message.chat.first_name
     # Настроим кнопку для сообщения
     button = buttons.keyboard_main_menu
+    try:
+        all_cryptos = get_all_cryptos()
+        base.update_cryptos_list_in_db(all_cryptos)
+        settings.logging.info(
+            "Обновлена база всех криптовалют для нового пользователя"
+        )
+    except Exception as error:
+        settings.logging.error(
+            f"Ошибка ({error}) при обновлении списка криптовалют в БД"
+        )
     try:
         base.create_new_user(
             user_id=update.effective_chat.id,

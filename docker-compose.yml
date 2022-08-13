@@ -1,0 +1,15 @@
+version: '3.9'
+
+services:
+  tgbot:
+    restart: always
+    build: .
+    command: sh -c "python main.py"
+    container_name: bot
+    volumes:
+      - volume_tg_bot:/tg_bot
+    env_file:
+      - ./predict_stock_crypto/config/.env
+
+volumes:
+  volume_tg_bot:
