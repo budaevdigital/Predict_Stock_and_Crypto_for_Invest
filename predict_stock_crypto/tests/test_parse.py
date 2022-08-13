@@ -3,7 +3,7 @@
 import unittest
 from os import path
 from sys import path as sys_path
-
+from pathlib import Path
 import pandas as pd
 
 # Обновляем директорию для импорта встроенных модулей
@@ -13,6 +13,17 @@ sys_path.append(parent)
 
 from parse import parse
 from parse import predict_parse
+
+
+def setUpModule():
+    """Вызывается один раз перед всеми классами, которые есть в файле."""
+    BASE_DIR = Path(__file__).resolve().parent.parent
+    CONFIG_DIR = path.join(BASE_DIR, "config")
+    LOGGING_DIR = path.join(CONFIG_DIR, "logging")
+    LOGGING = path.join(LOGGING_DIR, "logfile.log")
+    if not LOGGING:
+        with open(LOGGING, "w") as file:
+            file.write(" ")
 
 
 class TestParse(unittest.TestCase):
@@ -62,7 +73,7 @@ class TestParse(unittest.TestCase):
 class TestPredictParse(unittest.TestCase):
     """
     Тестирует работу парсинга предсказываемой цены криптовалюты
-    """
+    """     
 
     def test_get_html_from_url_response(self):
         url = "https://yandex.ru"

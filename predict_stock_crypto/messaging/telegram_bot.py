@@ -324,6 +324,18 @@ def add_crypto_in_watchlist(update, context) -> None:
                             f"(<b>{crypto_symbol}</b>)."
                             " Перепроверьте, возможно вы ошиблись в написании?"
                         )
+                        try:
+                            all_cryptos = get_all_cryptos()
+                            base.update_cryptos_list_in_db(all_cryptos)
+                            settings.logging.info(
+                                "Обновлена база всех криптовалют для "
+                                "нового пользователя"
+                            )
+                        except Exception as error:
+                            settings.logging.error(
+                                f"Ошибка ({error}) при обновлении списка "
+                                "криптовалют в блоке добавления в избранное"
+                            )
                 else:
                     msg = "Список избранного заполнен.\n\nУдалите, "
                     "что-нибудь, перед добавлением!"
