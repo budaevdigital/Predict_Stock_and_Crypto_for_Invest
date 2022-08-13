@@ -15,16 +15,13 @@ from parse import parse
 from parse import predict_parse
 
 
-def setUpModule():
-    """Вызывается один раз перед всеми классами, которые есть в файле."""
-    # Don't show logging messages while testing
-    logging.disable(logging.CRITICAL)
-
-
 class TestParse(unittest.TestCase):
     """
     Тестирует работу парсеров, используемых в боте
     """
+
+    def setUp(self):
+        logging.disable(logging.CRITICAL)
 
     def test_lists_all_cryptos(self):
         """Получение всего списка криптовалюты. Investpy"""
@@ -69,6 +66,9 @@ class TestPredictParse(unittest.TestCase):
     """
     Тестирует работу парсинга предсказываемой цены криптовалюты
     """
+
+    def setUp(self):
+        logging.disable(logging.CRITICAL)
 
     def test_get_html_from_url_response(self):
         url = "https://yandex.ru"
