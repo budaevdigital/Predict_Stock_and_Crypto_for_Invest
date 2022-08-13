@@ -1,3 +1,5 @@
+# parse/user_agents_for_parse.py
+
 from random import choice
 
 USER_AGENTS = [
@@ -66,8 +68,9 @@ USER_AGENTS = [
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.38 Safari/537.36",
     "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36",
     "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36",
-    "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.62 Safari/537.36"
+    "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.62 Safari/537.36",
 ]
+
 
 def get_random_header_user_agent() -> dict[str, str]:
     """
@@ -79,7 +82,7 @@ def get_random_header_user_agent() -> dict[str, str]:
         "X-Requested-With": "XMLHttpRequest",
         "Accept": "text/html",
         "Accept-Encoding": "gzip, deflate, br",
-        "Connection": "keep-alive",    
+        "Connection": "keep-alive",
     """
     header = {
         "User-Agent": str(choice(USER_AGENTS)),

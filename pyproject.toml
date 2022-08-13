@@ -1,0 +1,24 @@
+[tool.black]
+line-length = 79
+target-version = ['py310']
+include = '\.pyi?$'
+exclude = '''
+/(
+  ^/venv
+  | migrations
+  | settings.py
+  | .eggs
+  | .git
+  | .hg
+  | .mypy_cache
+  | .tox
+  | .venv
+  | venv
+  | __init__.py
+  | _build
+  | buck-out
+  | build
+  | dist
+  | Dockerfile
+)/
+'''
