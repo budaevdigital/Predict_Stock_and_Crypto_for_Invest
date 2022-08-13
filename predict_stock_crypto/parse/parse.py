@@ -1,9 +1,4 @@
 # parse/parse.py
-
-import investpy
-import pandas as pd
-import requests
-
 # Обновляем директорию для импорта встроенных модулей
 from os import path
 from sys import path as sys_path
@@ -11,17 +6,19 @@ from sys import path as sys_path
 current = path.dirname(path.realpath(__file__))
 parent = path.dirname(current)
 sys_path.append(parent)
-
+import investpy
+import pandas as pd
+import requests
 from config import settings
 
 
 def get_all_cryptos() -> dict[str, str]:
     """
-    Получает список доступных криптовалют в виде ассоциативного массива (словаря)
+    Получает список доступных криптовалют в виде ассоциативного
+    массива (словаря)
     """
     # Уточняем нужные "столбцы". По-умолчанию доступно также 'currency'
-    result = investpy.crypto.get_cryptos_dict(columns=["name", "symbol"])
-    return result
+    return investpy.crypto.get_cryptos_dict(columns=["name", "symbol"])
 
 
 def get_historical_data(
@@ -37,31 +34,29 @@ def get_historical_data(
     match is_crypto:
         case True:
             try:
-                df = investpy.get_crypto_historical_data(
+                return investpy.get_crypto_historical_data(
                     crypto=symbol, from_date=from_date, to_date=today_date
                 )
-                return df
             except Exception as error:
                 settings.logging.error(
-                    f"Ошибка ({error}) при запросе исторических данных с investpy"
+                    f"Ошибка ({error}) при запросе исторических "
+                    "данных с investpy"
                 )
-                df = None
-                return df
+                return None
         case False:
             try:
-                df = investpy.get_stock_historical_data(
+                return investpy.get_stock_historical_data(
                     stock=symbol,
                     country=country,
                     from_date=from_date,
                     to_date=today_date,
                 )
-                return df
             except Exception as error:
                 settings.logging.error(
-                    f"Ошибка ({error}) при запросе исторических данных с investpy"
+                    f"Ошибка ({error}) при запросе исторических "
+                    "данных с investpy"
                 )
-                df = None
-                return df
+                return None
 
 
 def get_price_from_binance(symbol: str) -> str:
@@ -81,5 +76,4 @@ def get_price_from_binance(symbol: str) -> str:
         ).json()
     except Exception as error:
         settings.logging.error(f"Ошибка ({error}) при парсинге цен на binance")
-    result = format(float(response["price"]), ".2f")
-    return result
+    return format(float(response["price"]), ".2f")

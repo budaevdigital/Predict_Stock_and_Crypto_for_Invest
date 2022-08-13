@@ -10,20 +10,20 @@ sys_path.append(parent)
 
 from typing import Union
 import sqlite3
+
 from config import settings
 
 
 def get_bd_connection():
-    connect = sqlite3.connect(settings.DATABASE)
-    return connect
+    return sqlite3.connect(settings.DATABASE)
 
 
 def search_existing_field_in_db(
     db_name: str, column_name: str, search_field: Union[str, int]
 ) -> Union[tuple, bool]:
     """
-    Проверяет, существует ли указанная запись в БД. Если она есть, возвращает её
-    по указанным в аргументах параметрам.
+    Проверяет, существует ли указанная запись в БД. Если она есть,
+    возвращает её по указанным в аргументах параметрам.
     ### Аргумент:
         `db_name`(str): - принимает название базы данных
         (в контексте этой программы их может быть 4шт:
@@ -110,15 +110,15 @@ def create_new_user(
     user_id: int, first_name: str, last_name: str, username: str
 ) -> bool:
     """
-    Создаёт нового пользователя в БД. В качестве аргументов, принимает параметры
-    из ответа ТГ бота.
+    Создаёт нового пользователя в БД. В качестве аргументов,
+    принимает параметры из ответа ТГ бота.
     ### Аргумент:
         `user_id`(int): ID пользователя в ТГ
         `first_name`(str): Имя пользователя
         `last_name`(str): Фамилия пользователя
         `username`(str): Юзернейм пользователя в ТГ
     ### Возвращает:
-        bool: `True` - в случае, если пользователь создан или уже существует или
+        bool: `True` - в случае, если пользователь создан или уже существует
               `False` - когда что-то произошло при создании пользователя
     ### Исключения:
         `IntegrityError`: в случае, если пользователь существует
@@ -147,9 +147,11 @@ def create_new_user(
     # если данных для записи много, то нужно использовать
     # 'executemany' вместо обычной 'execute'
     try:
-        # поддерживается также и такой стиль "select * from lang where first=:year", {"year": 1972})
+        # поддерживается также и такой стиль "select * from lang
+        # where first=:year", {"year": 1972})
         cursor.execute(
-            "INSERT INTO users (username, firstname, lastname, userid) VALUES(?, ?, ?, ?);",
+            "INSERT INTO users (username, firstname, lastname, userid) "
+            "VALUES(?, ?, ?, ?);",
             (add_user),
         )
     except sqlite3.IntegrityError as IntegrityError:
@@ -166,7 +168,8 @@ def create_new_user(
 
 def search_duplicate_watch_crypto(cryptos_id: int, user_id: int) -> bool:
     """
-    Вспомогательная функция - Ищет есть ли в БД watchlist уже такакя криптавалюта
+    Вспомогательная функция - Ищет есть ли в БД watchlist
+    уже такакя криптавалюта
     ### Аргумент:
         `cryptos_id`(int): - ID криптовалюты из БД cryptos
         `user_id`(int): - ID пользователя в ТГ
@@ -178,12 +181,14 @@ def search_duplicate_watch_crypto(cryptos_id: int, user_id: int) -> bool:
     cursor = connect.cursor()
     try:
         cursor.execute(
-            "SELECT * FROM watch_cryptos WHERE cryptos_id = ? AND user_id = ?;",
+            "SELECT * FROM watch_cryptos "
+            "WHERE cryptos_id = ? AND user_id = ?;",
             (cryptos_id, user_id),
         )
     except Exception as error:
         settings.logging.error(
-            f"Ошибка ({error}) при поиске дубликатов записей в избранных криптовалютах"
+            f"Ошибка ({error}) при поиске дубликатов записей в "
+            "избранных криптовалютах"
         )
     result = cursor.fetchone()
     # при fetchone(), если ничего не найдённо, возвращается NoneType,
@@ -238,14 +243,15 @@ def add_new_crypto_in_db_for_watch(userid: int, symbol: str) -> bool:
             try:
                 cursor.execute(
                     """INSERT INTO watch_cryptos (
-                    cryptos_id, 
-                    cryptos_symbol, 
+                    cryptos_id,
+                    cryptos_symbol,
                     user_id) VALUES(?, ?, ?);""",
                     (symbol[0], symbol[2], user[0]),
                 )
             except sqlite3.IntegrityError as IntegrityError:
                 settings.logging.info(
-                    f"({IntegrityError}) - такая запись в избранных криптавалютах уже существует!"
+                    f"({IntegrityError}) - такая запись в избранных "
+                    "криптавалютах уже существует!"
                 )
                 connect.close()
                 return False

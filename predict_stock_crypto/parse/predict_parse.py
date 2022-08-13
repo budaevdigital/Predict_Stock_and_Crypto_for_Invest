@@ -3,10 +3,10 @@
 from datetime import date, timedelta
 from bs4 import BeautifulSoup
 import requests
-
 # Обновляем директорию для импорта встроенных модулей
 from os import path
 from sys import path as sys_path
+
 
 current = path.dirname(path.realpath(__file__))
 parent = path.dirname(current)

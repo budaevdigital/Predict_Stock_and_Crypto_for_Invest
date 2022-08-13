@@ -1,9 +1,9 @@
 # config/settings.py
-
-import logging
-from logging.handlers import RotatingFileHandler
 import os
 from pathlib import Path
+import logging
+from logging.handlers import RotatingFileHandler
+
 from dotenv import load_dotenv
 
 # Выбираем абсолютный путь - берём за основу этот файл и поднимаемся на две директории выше

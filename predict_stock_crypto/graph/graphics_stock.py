@@ -1,9 +1,8 @@
 # graph/graphics_stock.py
-
 import datetime
+
 import matplotlib.pyplot as plt
 import pandas as pd
-
 # Обновляем директорию для импорта модуля
 from os import path
 import sys
@@ -51,11 +50,9 @@ def EMA_or_SMA(
 def max_or_min(price_range: list, levels: str):
     match levels:
         case "High":
-            current_max = max(price_range, default=0)
-            return current_max
+            return max(price_range, default=0)
         case "Low":
-            current_min = min(price_range, default=0)
-            return current_min
+            return min(price_range, default=0)
 
 
 def levels(df, levels: str):

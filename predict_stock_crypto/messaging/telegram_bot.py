@@ -1,15 +1,15 @@
 # messaging/telegram_bot.py
-
 import telegram
 from telegram.ext import ConversationHandler, Updater
-
 # Обновляем директорию для импорта встроенных модулей
 from os import path
 from sys import path as sys_path
 
+
 current = path.dirname(path.realpath(__file__))
 parent = path.dirname(current)
 sys_path.append(parent)
+
 from config import settings, date_time
 from messaging import navigation as buttons
 from database import helpful_func as base

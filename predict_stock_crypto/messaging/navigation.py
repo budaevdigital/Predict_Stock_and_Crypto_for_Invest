@@ -1,5 +1,4 @@
 # messaging/navigation.py
-
 from telegram import ReplyKeyboardMarkup, KeyboardButton
 
 # Настройка кнопки для возвращения в Главное меню
@@ -39,6 +38,7 @@ keyboard_other_level_menu = ReplyKeyboardMarkup(
     resize_keyboard=True,
 )
 
+
 # Формирование клавиатуры из списка криптовалют
 def button_from_crypto_symbol_for_delete(list_cryptos: list):
     """
@@ -54,7 +54,6 @@ def button_from_crypto_symbol_for_delete(list_cryptos: list):
             name_button[row] = KeyboardButton("➖ " + str(list_cryptos[row][2]))
             button[row // row_in_column].append(name_button[row])
         button.append([btn_back_to_main])
-        keyboard_for_delete_menu = ReplyKeyboardMarkup(
+        return ReplyKeyboardMarkup(
             keyboard=(button), resize_keyboard=True
         )
-        return keyboard_for_delete_menu

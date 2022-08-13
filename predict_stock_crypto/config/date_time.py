@@ -1,5 +1,4 @@
 # config/date_time.py
-
 from typing import Union
 from datetime import date
 
@@ -21,7 +20,8 @@ def set_current_to_from_date() -> Union[dict[str, str], None]:
     day_month = date.today().month
     # Конструкция match-case работает начиная с Python3.10
     match day_month:
-        # Условие - если месяц январь или февраль (это начало года), то берём дату двухгодичную
+        # Условие - если месяц январь или февраль (это начало года),
+        # то берём дату двухгодичную
         case 1 | 2:
             dict_date["old-date"] = (
                 str(1) + "/" + str(12) + "/" + str(date.today().year - 2)
