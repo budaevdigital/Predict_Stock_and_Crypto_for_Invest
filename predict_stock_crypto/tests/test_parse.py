@@ -63,16 +63,21 @@ class TestPredictParse(unittest.TestCase):
     """
     Тестирует работу парсинга предсказываемой цены криптовалюты
     """
+
     def test_get_html_from_url_response(self):
-        url = 'https://yandex.ru'
+        url = "https://yandex.ru"
         task = predict_parse.get_html_from_url_response(url)
         self.assertEqual(task.status_code, 200, "Проблема со связью")
 
     def test_get_predict_price_1_to_14_days(self):
-        name_cryptos = 'bitcoin'
+        name_cryptos = "bitcoin"
         task = predict_parse.get_predict_price_1_to_14_days(name_cryptos)
-        self.assertIsInstance(task, str, "При парсинге предсказания с "
-                              "walletinvestor, что-то пошло не так")
+        self.assertIsInstance(
+            task,
+            str,
+            "При парсинге предсказания с "
+            "walletinvestor, что-то пошло не так",
+        )
 
 
 if __name__ == "__main__":

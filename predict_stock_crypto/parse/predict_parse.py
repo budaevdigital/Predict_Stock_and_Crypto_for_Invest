@@ -3,6 +3,7 @@
 from datetime import date, timedelta
 from bs4 import BeautifulSoup
 import requests
+
 # Обновляем директорию для импорта встроенных модулей
 from os import path
 from sys import path as sys_path

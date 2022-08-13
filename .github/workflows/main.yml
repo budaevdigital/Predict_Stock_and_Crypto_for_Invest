@@ -26,7 +26,7 @@ jobs:
     - name: Check lint with Black
       run: |
         # запуск проверки проекта c Black
-        black --check --diff .
+        black --check --diff predict_stock_crypto/
     - name: Test with flake8
       run: |
         # запуск проверки проекта по flake8

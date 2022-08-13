@@ -1,6 +1,7 @@
 # messaging/telegram_bot.py
 import telegram
 from telegram.ext import ConversationHandler, Updater
+
 # Обновляем директорию для импорта встроенных модулей
 from os import path
 from sys import path as sys_path
