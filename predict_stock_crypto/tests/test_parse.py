@@ -74,6 +74,7 @@ class TestPredictParse(unittest.TestCase):
     """
     Тестирует работу парсинга предсказываемой цены криптовалюты
     """
+
     def test_get_html_from_url_response(self):
         url = "https://yandex.ru"
         task = predict_parse.get_html_from_url_response(url)
