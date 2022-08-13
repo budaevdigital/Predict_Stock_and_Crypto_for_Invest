@@ -65,11 +65,14 @@ def first_starting_messaging(update, context) -> None:
     # Настроим кнопку для сообщения
     button = buttons.keyboard_main_menu
     try:
-        all_cryptos = get_all_cryptos()
-        base.update_cryptos_list_in_db(all_cryptos)
-        settings.logging.info(
-            "Обновлена база всех криптовалют для нового пользователя"
-        )
+        if not base.is_exist_db_all_list_crypto():
+            print("Нету списка крипты")
+            all_cryptos = get_all_cryptos()
+            base.update_cryptos_list_in_db(all_cryptos)
+            settings.logging.info(
+                "Обновлена база всех криптовалют для нового пользователя"
+            )
+            print("Список крипты обновился")
     except Exception as error:
         settings.logging.error(
             f"Ошибка ({error}) при обновлении списка криптовалют в БД"
@@ -212,14 +215,14 @@ def see_list_crypto_from_watchlist(update, context) -> None:
             case False:
                 cryptos_in_watchlist = []
                 button = buttons.keyboard_other_watchlist_menu
-                msg = "Список избранного пуст.\n\n[✅ Добавить]: добавить "
-                "криптовалюту на наблюдение."
+                msg = ("Список избранного пуст.\n\n[✅ Добавить]: добавить "
+                       "криптовалюту на наблюдение.")
             case _:
                 button = buttons.button_from_crypto_symbol_for_delete(
                     cryptos_in_watchlist
                 )
-                msg = "Выберите криптовалюту, которую нужно убрать из списка "
-                "наблюдения 🔽"
+                msg = ("Выберите криптовалюту, которую нужно убрать из списка "
+                       "наблюдения 🔽")
     except Exception as error:
         settings.logging.error(
             f"Ошибка ({error}) при показе избранных криптавалют в ТГ"
@@ -303,21 +306,34 @@ def add_crypto_in_watchlist(update, context) -> None:
                     user_chat_info.id, crypto_symbol
                 )
                 if is_add:
-                    msg = f"Криптовалюта <b>{crypto_symbol}</b> добавлена в "
-                    "список наблюдения!"
+                    msg = (f"Криптовалюта <b>{crypto_symbol}</b> добавлена в "
+                           "список наблюдения!")
                 else:
                     msg = (
                         f"Не удалось добавить валюту (<b>{crypto_symbol}</b>)."
                         " Перепроверьте, возможно вы ошиблись в написании?"
                     )
+                    try:
+                        if not base.is_exist_db_all_list_crypto():
+                            all_cryptos = get_all_cryptos()
+                            base.update_cryptos_list_in_db(all_cryptos)
+                            settings.logging.info(
+                                "Обновлена база всех криптовалют для "
+                                "нового пользователя"
+                            )
+                    except Exception as error:
+                        settings.logging.error(
+                            f"Ошибка ({error}) при обновлении списка "
+                            "криптовалют в БД"
+                        )
             case _:
                 if len(cryptos_in_watchlist) < watchlist_position:
                     is_add = base.add_new_crypto_in_db_for_watch(
                         user_chat_info.id, crypto_symbol
                     )
                     if is_add:
-                        msg = f"Криптовалюта <b>{crypto_symbol}</b> добавлена "
-                        "в список наблюдения!"
+                        msg = (f"Криптовалюта <b>{crypto_symbol}</b> добавлена"
+                               " в список наблюдения!")
                     else:
                         msg = (
                             "Хм, не удалось добавить валюту "
@@ -325,20 +341,21 @@ def add_crypto_in_watchlist(update, context) -> None:
                             " Перепроверьте, возможно вы ошиблись в написании?"
                         )
                         try:
-                            all_cryptos = get_all_cryptos()
-                            base.update_cryptos_list_in_db(all_cryptos)
-                            settings.logging.info(
-                                "Обновлена база всех криптовалют для "
-                                "нового пользователя"
-                            )
+                            if not base.is_exist_db_all_list_crypto():
+                                all_cryptos = get_all_cryptos()
+                                base.update_cryptos_list_in_db(all_cryptos)
+                                settings.logging.info(
+                                    "Обновлена база всех криптовалют для "
+                                    "нового пользователя"
+                                )
                         except Exception as error:
                             settings.logging.error(
                                 f"Ошибка ({error}) при обновлении списка "
-                                "криптовалют в блоке добавления в избранное"
+                                "криптовалют в БД"
                             )
                 else:
-                    msg = "Список избранного заполнен.\n\nУдалите, "
-                    "что-нибудь, перед добавлением!"
+                    msg = ("Список избранного заполнен.\n\nУдалите, "
+                           "что-нибудь, перед добавлением!")
     except Exception as error:
         settings.logging.error(
             f"Ошибка ({error}) при добавлении криптавалют в ТГ"
