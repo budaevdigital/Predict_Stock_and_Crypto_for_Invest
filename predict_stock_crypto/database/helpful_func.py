@@ -106,9 +106,9 @@ def update_cryptos_list_in_db(lists_cryptos: dict[str, str]) -> bool:
     return is_update
 
 
-def is_exist_db_all_list_crypto(cryptos="cryptos",
-                                symbol="symbol",
-                                BTC="BTC") -> bool:
+def is_exist_db_all_list_crypto(
+    cryptos="cryptos", symbol="symbol", BTC="BTC"
+) -> bool:
     return search_existing_field_in_db(cryptos, symbol, BTC)
 
 
