@@ -14,6 +14,8 @@ sys_path.append(parent)
 from parse import parse
 from parse import predict_parse
 
+logger = logging.getLogger(__name__)
+
 
 class TestParse(unittest.TestCase):
     """
@@ -87,4 +89,4 @@ class TestPredictParse(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    unittest.main(exit=False)
+    unittest.main()
