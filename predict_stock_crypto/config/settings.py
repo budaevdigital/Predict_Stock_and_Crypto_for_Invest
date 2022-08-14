@@ -40,8 +40,8 @@ load_dotenv()
 try:
     TOKEN = os.getenv("TOKEN")
 except Exception as error:
-    logging.critical(f'({error}) - отсутствует переменная окружения "TOKEN"')
+    logging.error(f'({error}) - отсутствует переменная окружения "TOKEN"')
 try:
     CHAT_ID = int(os.getenv("CHATID"))
 except Exception as error:
-    logging.critical(f'({error}) - отсутствует переменная окружения "CHAT_ID"')
+    logging.error(f'({error}) - отсутствует переменная окружения "CHAT_ID"')

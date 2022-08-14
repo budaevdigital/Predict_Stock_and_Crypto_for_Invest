@@ -1,5 +1,4 @@
 # tests/test_parse.py
-
 import unittest
 from os import path
 from sys import path as sys_path
@@ -14,16 +13,23 @@ sys_path.append(parent)
 from parse import parse
 from parse import predict_parse
 
-logger = logging.getLogger(__name__)
+
+def setUpModule():
+    """Вызывается один раз перед всеми классами, которые есть в файле."""
+    # выключаем логирование до уровня CRITICAL
+    logging.disable(logging.CRITICAL)
+
+
+def tearDownModule():
+    """Вызывается один раз после всех классов, которые есть в файле."""
+    # Включаем логирование
+    logging.disable(logging.NOTSET)
 
 
 class TestParse(unittest.TestCase):
     """
     Тестирует работу парсеров, используемых в боте
     """
-
-    def setUp(self):
-        logging.disable(logging.CRITICAL)
 
     def test_lists_all_cryptos(self):
         """Получение всего списка криптовалюты. Investpy"""
@@ -68,9 +74,6 @@ class TestPredictParse(unittest.TestCase):
     """
     Тестирует работу парсинга предсказываемой цены криптовалюты
     """
-
-    def setUp(self):
-        logging.disable(logging.CRITICAL)
 
     def test_get_html_from_url_response(self):
         url = "https://yandex.ru"

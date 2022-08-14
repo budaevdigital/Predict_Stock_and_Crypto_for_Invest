@@ -106,12 +106,6 @@ def update_cryptos_list_in_db(lists_cryptos: dict[str, str]) -> bool:
     return is_update
 
 
-def is_exist_db_all_list_crypto(
-    cryptos="cryptos", symbol="symbol", BTC="BTC"
-) -> bool:
-    return search_existing_field_in_db(cryptos, symbol, BTC)
-
-
 def create_new_user(
     user_id: int, first_name: str, last_name: str, username: str
 ) -> bool:
@@ -298,7 +292,7 @@ def delete_crypto_from_watch_list(userid: int, symbol: str) -> bool:
     user = search_existing_field_in_db(
         db_name="users", column_name="userid", search_field=userid
     )
-    # Проверим наличик крипты в самом списке watchlist, чтобы избежать
+    # Проверим наличие крипты в самом списке watchlist, чтобы избежать
     # дублирущих запросов
     symbol_in_watchlist = search_existing_field_in_db(
         db_name="watch_cryptos",

@@ -7,7 +7,6 @@ import pandas as pd
 # Обновляем директорию для импорта модуля
 from os import path
 import sys
-
 current = path.dirname(path.realpath(__file__))
 parent = path.dirname(current)
 sys.path.append(parent)

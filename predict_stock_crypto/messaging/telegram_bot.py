@@ -58,22 +58,26 @@ def first_starting_messaging(update, context) -> None:
         'first_name': 'Dmitry'
     }
     """
-    # Сохраняем информацию о чате, откоторого пришло сообщщение
+    # Сохраняем информацию о чате, откоторого пришло сообщение
     user_chat_info = update.effective_chat
     # Узнаем имя нашего пользователя (распарсив запрос update.message)
     user_first_name = update.message.chat.first_name
     # Настроим кнопку для сообщения
     button = buttons.keyboard_main_menu
     try:
-        if not base.is_exist_db_all_list_crypto():
-            all_cryptos = get_all_cryptos()
-            base.update_cryptos_list_in_db(all_cryptos)
-            settings.logging.info(
-                "Обновлена база всех криптовалют для нового пользователя"
-            )
+        match base.search_existing_field_in_db(cryptos="cryptos",
+                                               symbol="symbol",
+                                               BTC="BTC"):
+            case False:
+                all_cryptos = get_all_cryptos()
+                base.update_cryptos_list_in_db(all_cryptos)
+                settings.logging.info(
+                    "Обновлена база всех криптовалют для нового пользователя"
+                )
     except Exception as error:
         settings.logging.error(
-            f"Ошибка ({error}) при обновлении списка криптовалют в БД"
+            f"Ошибка ({error}) при обновлении списка криптовалют в БД "
+            "при добавлении нового пользователя"
         )
     try:
         base.create_new_user(
@@ -318,17 +322,22 @@ def add_crypto_in_watchlist(update, context) -> None:
                         " Перепроверьте, возможно вы ошиблись в написании?"
                     )
                     try:
-                        if not base.is_exist_db_all_list_crypto():
-                            all_cryptos = get_all_cryptos()
-                            base.update_cryptos_list_in_db(all_cryptos)
-                            settings.logging.info(
-                                "Обновлена база всех криптовалют для "
-                                "нового пользователя"
-                            )
+                        match base.search_existing_field_in_db(
+                                cryptos="cryptos",
+                                symbol="symbol",
+                                BTC="BTC"):
+                            case False:
+                                all_cryptos = get_all_cryptos()
+                                base.update_cryptos_list_in_db(all_cryptos)
+                                settings.logging.info(
+                                    "Обновлена база всех криптовалют для "
+                                    "нового пользователя"
+                                )
                     except Exception as error:
                         settings.logging.error(
-                            f"Ошибка ({error}) при обновлении списка "
-                            "криптовалют в БД"
+                            f"Ошибка ({error}) при обновлении "
+                            "списка криптовалют в БД при "
+                            "добавлении нового пользователя"
                         )
             case _:
                 if len(cryptos_in_watchlist) < watchlist_position:
@@ -347,17 +356,22 @@ def add_crypto_in_watchlist(update, context) -> None:
                             " Перепроверьте, возможно вы ошиблись в написании?"
                         )
                         try:
-                            if not base.is_exist_db_all_list_crypto():
-                                all_cryptos = get_all_cryptos()
-                                base.update_cryptos_list_in_db(all_cryptos)
-                                settings.logging.info(
-                                    "Обновлена база всех криптовалют для "
-                                    "нового пользователя"
-                                )
+                            match base.search_existing_field_in_db(
+                                    cryptos="cryptos",
+                                    symbol="symbol",
+                                    BTC="BTC"):
+                                case False:
+                                    all_cryptos = get_all_cryptos()
+                                    base.update_cryptos_list_in_db(all_cryptos)
+                                    settings.logging.info(
+                                        "Обновлена база всех криптовалют для "
+                                        "нового пользователя"
+                                    )
                         except Exception as error:
                             settings.logging.error(
-                                f"Ошибка ({error}) при обновлении списка "
-                                "криптовалют в БД"
+                                f"Ошибка ({error}) при обновлении "
+                                "списка криптовалют в БД при "
+                                "добавлении нового пользователя"
                             )
                 else:
                     msg = (
