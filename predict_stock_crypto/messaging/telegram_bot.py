@@ -53,7 +53,7 @@ def first_starting_messaging(update, context) -> None:
     {
         'username': 'dmitrybudaev',
         'type': 'private',
-        'id': 286003757,
+        'id': 3354059247,
         'last_name': 'Budaev',
         'first_name': 'Dmitry'
     }
@@ -64,16 +64,13 @@ def first_starting_messaging(update, context) -> None:
     user_first_name = update.message.chat.first_name
     # Настроим кнопку для сообщения
     button = buttons.keyboard_main_menu
+    # Создадим список криптовалют
     try:
-        match base.search_existing_field_in_db(
-            cryptos="cryptos", symbol="symbol", BTC="BTC"
-        ):
-            case False:
-                all_cryptos = get_all_cryptos()
-                base.update_cryptos_list_in_db(all_cryptos)
-                settings.logging.info(
-                    "Обновлена база всех криптовалют для нового пользователя"
-                )
+        all_cryptos = get_all_cryptos()
+        base.update_cryptos_list_in_db(all_cryptos)
+        settings.logging.info(
+            "Обновлена база всех криптовалют для нового пользователя"
+        )
     except Exception as error:
         settings.logging.error(
             f"Ошибка ({error}) при обновлении списка криптовалют в БД "
@@ -157,6 +154,22 @@ def see_menu_watchlist(update, context) -> None:
     user_chat_info = update.effective_chat
     button = buttons.keyboard_other_watchlist_menu
     count = 0
+    try:
+        match base.search_existing_field_in_db(
+            db_name="cryptos", column_name="symbol", search_field="btc"
+        ):
+            case False:
+                all_cryptos = get_all_cryptos()
+                base.update_cryptos_list_in_db(all_cryptos)
+                settings.logging.info(
+                    "Обновлена база всех криптовалют при просмотре "
+                    "списка избранных"
+                )
+    except Exception as error:
+        settings.logging.error(
+            f"Ошибка ({error}) при обновлении списка криптовалют в БД "
+            "при просмотре списка избранных криптовалют"
+        )
     try:
         cryptos_in_watchlist = base.reading_crypto_in_watchlist(
             user_chat_info.id
@@ -266,8 +279,8 @@ def choise_and_delete_crypto_from_watchlist(update, context) -> None:
             "\n"
             f"Сейчас в избранном <b>{len(cryptos_in_watchlist)}</b> позиции."
             "\n"
-            f"Доступны на наблюдение "
-            "<b>{watchlist_position - len(cryptos_in_watchlist)}</b> позиций"
+            "Доступны на наблюдение "
+            f"<b>{watchlist_position - len(cryptos_in_watchlist)}</b> позиций"
             "\n"
             "\n"
             "[✅ <b><i>Добавить</i></b>]: добавить криптовалюту на наблюдение."
@@ -321,23 +334,6 @@ def add_crypto_in_watchlist(update, context) -> None:
                         f"Не удалось добавить валюту (<b>{crypto_symbol}</b>)."
                         " Перепроверьте, возможно вы ошиблись в написании?"
                     )
-                    try:
-                        match base.search_existing_field_in_db(
-                            cryptos="cryptos", symbol="symbol", BTC="BTC"
-                        ):
-                            case False:
-                                all_cryptos = get_all_cryptos()
-                                base.update_cryptos_list_in_db(all_cryptos)
-                                settings.logging.info(
-                                    "Обновлена база всех криптовалют для "
-                                    "нового пользователя"
-                                )
-                    except Exception as error:
-                        settings.logging.error(
-                            f"Ошибка ({error}) при обновлении "
-                            "списка криптовалют в БД при "
-                            "добавлении нового пользователя"
-                        )
             case _:
                 if len(cryptos_in_watchlist) < watchlist_position:
                     is_add = base.add_new_crypto_in_db_for_watch(
@@ -354,23 +350,6 @@ def add_crypto_in_watchlist(update, context) -> None:
                             f"(<b>{crypto_symbol}</b>)."
                             " Перепроверьте, возможно вы ошиблись в написании?"
                         )
-                        try:
-                            match base.search_existing_field_in_db(
-                                cryptos="cryptos", symbol="symbol", BTC="BTC"
-                            ):
-                                case False:
-                                    all_cryptos = get_all_cryptos()
-                                    base.update_cryptos_list_in_db(all_cryptos)
-                                    settings.logging.info(
-                                        "Обновлена база всех криптовалют для "
-                                        "нового пользователя"
-                                    )
-                        except Exception as error:
-                            settings.logging.error(
-                                f"Ошибка ({error}) при обновлении "
-                                "списка криптовалют в БД при "
-                                "добавлении нового пользователя"
-                            )
                 else:
                     msg = (
                         "Список избранного заполнен.\n\nУдалите, "
