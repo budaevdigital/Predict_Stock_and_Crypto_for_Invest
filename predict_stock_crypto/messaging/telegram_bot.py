@@ -65,9 +65,9 @@ def first_starting_messaging(update, context) -> None:
     # Настроим кнопку для сообщения
     button = buttons.keyboard_main_menu
     try:
-        match base.search_existing_field_in_db(cryptos="cryptos",
-                                               symbol="symbol",
-                                               BTC="BTC"):
+        match base.search_existing_field_in_db(
+            cryptos="cryptos", symbol="symbol", BTC="BTC"
+        ):
             case False:
                 all_cryptos = get_all_cryptos()
                 base.update_cryptos_list_in_db(all_cryptos)
@@ -323,9 +323,8 @@ def add_crypto_in_watchlist(update, context) -> None:
                     )
                     try:
                         match base.search_existing_field_in_db(
-                                cryptos="cryptos",
-                                symbol="symbol",
-                                BTC="BTC"):
+                            cryptos="cryptos", symbol="symbol", BTC="BTC"
+                        ):
                             case False:
                                 all_cryptos = get_all_cryptos()
                                 base.update_cryptos_list_in_db(all_cryptos)
@@ -357,9 +356,8 @@ def add_crypto_in_watchlist(update, context) -> None:
                         )
                         try:
                             match base.search_existing_field_in_db(
-                                    cryptos="cryptos",
-                                    symbol="symbol",
-                                    BTC="BTC"):
+                                cryptos="cryptos", symbol="symbol", BTC="BTC"
+                            ):
                                 case False:
                                     all_cryptos = get_all_cryptos()
                                     base.update_cryptos_list_in_db(all_cryptos)
