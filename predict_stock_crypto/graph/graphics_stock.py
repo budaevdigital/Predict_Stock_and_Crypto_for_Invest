@@ -53,7 +53,7 @@ def max_or_min(price_range: list, levels: str):
         price_range(list): список цен
         levels(str): значение High или Low
     Возвращает:
-        min \ max: максимальную или минимальную цену, либо 0 (ноль)
+        min\max: максимальную или минимальную цену, либо 0 (ноль)
     """
     match levels:
         case "High":
