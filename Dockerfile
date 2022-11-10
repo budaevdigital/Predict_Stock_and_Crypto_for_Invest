@@ -12,7 +12,7 @@ RUN mkdir /tg_bot
 COPY requirements.txt /tg_bot
 
 # Выполнить установку зависимостей внутри контейнера.
-RUN pip3 install -r /tg_bot/requirements.txt --no-cache-dir
+RUN pip install -r /tg_bot/requirements.txt --no-cache-dir
 
 # Скопировать содержимое директории c локального компьютера
 # в директорию /tg_bot.
