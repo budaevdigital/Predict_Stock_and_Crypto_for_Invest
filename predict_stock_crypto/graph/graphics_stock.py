@@ -17,7 +17,7 @@ plt.style.use(settings.PYPLOT_SET_GRAPH)
 
 
 def EMA_or_SMA(
-    moving_average: str, days_first: int, days_second: int, df
+    mov_avg: str, days_first: int, days_second: int, df: pd.DataFrame
 ) -> tuple:
     """
     Преимущество EMA в том, что в отличие от SMA, этот показатель реагирует
@@ -25,10 +25,10 @@ def EMA_or_SMA(
     ложные сигналы, а SMA хороша тем, что изменяет направление медленее,
     чем EMA, тем самым "гасит" ложные сигналы
     """
-    match moving_average:
+    df_days_first = pd.DataFrame()
+    df_days_second = pd.DataFrame()
+    match mov_avg:
         case "EMA":
-            df_days_first = pd.DataFrame()
-            df_days_second = pd.DataFrame()
             df_days_first["Close Price"] = (
                 df["Close"].rolling(window=days_first).mean()
             )
@@ -37,8 +37,6 @@ def EMA_or_SMA(
             )
             return df_days_first["Close Price"], df_days_second["Close Price"]
         case "SMA":
-            df_days_first = pd.DataFrame()
-            df_days_second = pd.DataFrame()
             df_days_first["Close Price"] = (
                 df["Close"].ewm(span=days_first).mean()
             )
@@ -49,14 +47,21 @@ def EMA_or_SMA(
 
 
 def max_or_min(price_range: list, levels: str):
+    """
+    Высчитывает максимальную или минимальную цену в списке
+    Аргумент:
+        price_range(list): список цен
+        levels(str): значение High или Low
+    Возвращает:
+        min \ max: максимальную или минимальную цену, либо 0 (ноль)
+    """
     match levels:
         case "High":
             return max(price_range, default=0)
         case "Low":
             return min(price_range, default=0)
 
-
-def levels(df, levels: str):
+def levels(df: pd.DataFrame, levels: str):
     """
     Функция, которая на графике показывает макс. и мин. точки, после
     которых был разворот.
@@ -93,9 +98,9 @@ def levels(df, levels: str):
 
 
 def stock_to_graph(
-    df,
-    from_date,
-    today_date,
+    df: pd.DataFrame,
+    from_date: str,
+    today_date: str,
     stock: str,
     function: str,
     days_first: int = 30,
