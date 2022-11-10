@@ -49,8 +49,8 @@ class TestParse(unittest.TestCase):
         }
         task = parse.get_historical_data(
             symbol="bitcoin",
-            from_date="01/04/2020",
-            today_date="02/04/2020",
+            from_date="01/04/2022",
+            today_date="02/04/2022",
             is_crypto=True,
             country="United States",
         )
