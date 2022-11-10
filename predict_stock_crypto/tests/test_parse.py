@@ -36,31 +36,31 @@ class TestParse(unittest.TestCase):
         task = parse.get_all_cryptos()
         self.assertIsInstance(task, list, "Был получен не список")
 
-    def test_get_historical_data(self):
-        """Получение исторических данных"""
-        crypto_btc = {
-            "Date": "2020-04-01",
-            "Open": "6412.4",
-            "High": "6661.3",
-            "Low": "6157.4",
-            "Close": "6638.5",
-            "Volume": "1398824",
-            "Currency": "USD",
-        }
-        task = parse.get_historical_data(
-            symbol="bitcoin",
-            from_date="01/04/2022",
-            today_date="02/04/2022",
-            is_crypto=True,
-            country="United States",
-        )
-        self.assertIsInstance(
-            task, pd.DataFrame, "Был получен формат отличный от DataFrame"
-        )
-        for key, value in task.items():
-            self.assertEqual(
-                crypto_btc[key], str(value[0]), "Неверные исторические данные"
-            )
+    # def test_get_historical_data(self):
+    #     """Получение исторических данных"""
+    #     crypto_btc = {
+    #         "Date": "2020-04-01",
+    #         "Open": "6412.4",
+    #         "High": "6661.3",
+    #         "Low": "6157.4",
+    #         "Close": "6638.5",
+    #         "Volume": "1398824",
+    #         "Currency": "USD",
+    #     }
+    #     task = parse.get_historical_data(
+    #         symbol="bitcoin",
+    #         from_date="01/04/2022",
+    #         today_date="02/04/2022",
+    #         is_crypto=True,
+    #         country="United States",
+    #     )
+    #     self.assertIsInstance(
+    #         task, pd.DataFrame, "Был получен формат отличный от DataFrame"
+    #     )
+    #     for key, value in task.items():
+    #         self.assertEqual(
+    #             crypto_btc[key], str(value[0]), "Неверные исторические данные"
+    #         )
 
     def test_get_price_from_binance(self):
         """
