@@ -61,6 +61,7 @@ def max_or_min(price_range: list, levels: str):
         case "Low":
             return min(price_range, default=0)
 
+
 def levels(df: pd.DataFrame, levels: str):
     """
     Функция, которая на графике показывает макс. и мин. точки, после
