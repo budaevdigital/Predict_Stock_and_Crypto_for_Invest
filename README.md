@@ -95,9 +95,9 @@ docker-compose up --build
 
 GitHub Actions состоит из 3-х jobs:
 
-- formatting_and_test = Проверка кода Линтером (flake8) и форматтером (black), и проведение Unittest тестирования.
+- **formatting_and_test** = Проверка кода Линтером (flake8) и форматтером (black), и проведение Unittest тестирования.
   (тесты в workflow на получения данных с investpy не проходят, т.к. GiHub блокирует сторонее соединение)
-- build_and_push_to_docker_hub = Сборка и публикация образа на DockerHub
+- **build_and_push_to_docker_hub** = Сборка и публикация образа на DockerHub
   (для этого нужно добавить DOCKER_USERNAME, DOCKER_PASSWORD и NAME_REPO в файл '.env')
-- deploy = загрузка образа на сервер и его активация
+- **deploy** = загрузка образа на сервер и его активация
   (этот job отключен, но вы можете ознакомиться самостоятельно ознакомиться с его настройками в файле '.github/worflows/main.yml')
