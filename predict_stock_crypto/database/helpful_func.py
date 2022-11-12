@@ -79,7 +79,7 @@ def update_cryptos_list_in_db(lists_cryptos: dict[str, str]) -> bool:
             """CREATE TABLE IF NOT EXISTS cryptos(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
-            symbol TEXT UNIQUE);
+            symbol TEXT NOT NULL);
         """
         )
     except Exception as error:
