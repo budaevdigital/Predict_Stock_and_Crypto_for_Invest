@@ -17,8 +17,9 @@ LOGGING_DIR = os.path.join(CONFIG_DIR, "logging")
 LOGGING = os.path.join(LOGGING_DIR, "logfile.log")
 
 # Здесь задана глобальная конфигурация для всех логгеров
+# Если требуется более детальный сбор логов, измените level=logging. на INFO
 logging.basicConfig(
-    handlers=[RotatingFileHandler(LOGGING, maxBytes=100000, backupCount=5)],
+    handlers=[RotatingFileHandler(LOGGING, maxBytes=10**5, backupCount=5)],
     level=logging.ERROR,
     format="[%(asctime)s] %(levelname)s [%(name)s.%(funcName)s:%(lineno)d] %(message)s",
     datefmt="%Y-%m-%d | T%H:%M:%S",
@@ -41,8 +42,14 @@ load_dotenv()
 try:
     TOKEN = os.getenv("TOKEN")
 except Exception as error:
-    logging.error(f'({error}) - отсутствует переменная окружения "TOKEN"')
+    logging.exception(
+        f'({error}) - отсутствует переменная окружения "TOKEN"',
+        stack_info=True,
+    )
 try:
     CHAT_ID = int(os.getenv("CHATID"))
 except Exception as error:
-    logging.error(f'({error}) - отсутствует переменная окружения "CHAT_ID"')
+    logging.exception(
+        f'({error}) - отсутствует переменная окружения "CHAT_ID"',
+        stack_info=True,
+    )

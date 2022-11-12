@@ -38,9 +38,10 @@ def get_historical_data(
                     crypto=symbol, from_date=from_date, to_date=today_date
                 )
             except Exception as error:
-                settings.logging.error(
+                settings.logging.exception(
                     f"Ошибка ({error}) при запросе исторических "
-                    "данных с investpy"
+                    "данных с investpy",
+                    stack_info=True,
                 )
                 return None
         case False:
@@ -52,9 +53,10 @@ def get_historical_data(
                     to_date=today_date,
                 )
             except Exception as error:
-                settings.logging.error(
+                settings.logging.exception(
                     f"Ошибка ({error}) при запросе исторических "
-                    "данных с investpy"
+                    "данных с investpy",
+                    stack_info=True,
                 )
                 return None
 
@@ -75,5 +77,7 @@ def get_price_from_binance(symbol: str) -> str:
             f"https://api.binance.com/api/v3/ticker/price?symbol={symbol}USDT"
         ).json()
     except Exception as error:
-        settings.logging.error(f"Ошибка ({error}) при парсинге цен на binance")
+        settings.logging.exception(
+            f"Ошибка ({error}) при парсинге цен на binance", stack_info=True
+        )
     return format(float(response["price"]), ".2f")

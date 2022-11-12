@@ -72,9 +72,10 @@ def first_starting_messaging(update, context) -> None:
             "Обновлена база всех криптовалют для нового пользователя"
         )
     except Exception as error:
-        settings.logging.error(
+        settings.logging.exception(
             f"Ошибка ({error}) при обновлении списка криптовалют в БД "
-            "при добавлении нового пользователя"
+            "при добавлении нового пользователя",
+            stack_info=True,
         )
     try:
         base.create_new_user(
@@ -84,8 +85,9 @@ def first_starting_messaging(update, context) -> None:
             username=update.message.chat["username"],
         )
     except Exception as error:
-        settings.logging.error(
-            f"Ошибка ({error}) при создании пользователя из ТГ бота"
+        settings.logging.exception(
+            f"Ошибка ({error}) при создании пользователя из ТГ бота",
+            stack_info=True,
         )
     # и напишем персональное сообщение
     context.bot.send_message(
@@ -166,17 +168,19 @@ def see_menu_watchlist(update, context) -> None:
                     "списка избранных"
                 )
     except Exception as error:
-        settings.logging.error(
+        settings.logging.exception(
             f"Ошибка ({error}) при обновлении списка криптовалют в БД "
-            "при просмотре списка избранных криптовалют"
+            "при просмотре списка избранных криптовалют",
+            stack_info=True,
         )
     try:
         cryptos_in_watchlist = base.reading_crypto_in_watchlist(
             user_chat_info.id
         )
     except Exception as error:
-        settings.logging.error(
-            f"Ошибка ({error}) при чтении избранных криптавалют из ТГ"
+        settings.logging.exception(
+            f"Ошибка ({error}) при чтении избранных криптавалют из ТГ",
+            stack_info=True,
         )
         cryptos_in_watchlist = [
             (),
@@ -243,8 +247,9 @@ def see_list_crypto_from_watchlist(update, context) -> None:
                     "наблюдения 🔽"
                 )
     except Exception as error:
-        settings.logging.error(
-            f"Ошибка ({error}) при показе избранных криптавалют в ТГ"
+        settings.logging.exception(
+            f"Ошибка ({error}) при показе избранных криптавалют в ТГ",
+            stack_info=True,
         )
     context.bot.send_message(
         chat_id=user_chat_info.id,
@@ -263,8 +268,9 @@ def choise_and_delete_crypto_from_watchlist(update, context) -> None:
     try:
         base.delete_crypto_from_watch_list(user_chat_info.id, symbol[1])
     except Exception as error:
-        settings.logging.error(
-            f"Ошибка ({error}) при удалении избранных криптавалют из ТГ"
+        settings.logging.exception(
+            f"Ошибка ({error}) при удалении избранных криптавалют из ТГ",
+            stack_info=True,
         )
     cryptos_in_watchlist = base.reading_crypto_in_watchlist(user_chat_info.id)
     match cryptos_in_watchlist:
@@ -356,8 +362,9 @@ def add_crypto_in_watchlist(update, context) -> None:
                         "что-нибудь, перед добавлением!"
                     )
     except Exception as error:
-        settings.logging.error(
-            f"Ошибка ({error}) при добавлении криптавалют в ТГ"
+        settings.logging.exception(
+            f"Ошибка ({error}) при добавлении криптавалют в ТГ",
+            stack_info=True,
         )
     button = buttons.keyboard_other_watchlist_menu
     context.bot.send_message(
@@ -419,8 +426,9 @@ def get_price_1_to_14_days(update, context) -> None:
                         parse_mode="HTML",
                     )
     except Exception as error:
-        settings.logging.error(
-            f"Ошибка ({error}) при запросе предсказания цен криптавалют в ТГ"
+        settings.logging.exception(
+            f"Ошибка ({error}) при запросе предсказания цен криптавалют в ТГ",
+            stack_info=True,
         )
 
 
@@ -451,8 +459,9 @@ def get_high_level_graph(
     try:
         dict_date = date_time.set_current_to_from_date()
     except Exception as error:
-        settings.logging.error(
-            f"Ошибка ({error}) при запросе даты при отрисовки графиков в ТГ"
+        settings.logging.exception(
+            f"Ошибка ({error}) при запросе даты при отрисовки графиков в ТГ",
+            stack_info=True,
         )
     cryptos_in_watchlist = base.reading_crypto_in_watchlist(user_chat_info.id)
     match cryptos_in_watchlist:
@@ -501,9 +510,10 @@ def get_high_level_graph(
                     )
                     send_photo(img_name, user_chat_info.id)
             except Exception as error:
-                settings.logging.error(
+                settings.logging.exception(
                     f"Ошибка ({error}) при запросе даты при отрисовки "
-                    "графиков в ТГ"
+                    "графиков в ТГ",
+                    stack_info=True,
                 )
 
 

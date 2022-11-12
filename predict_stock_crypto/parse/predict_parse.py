@@ -32,8 +32,9 @@ def get_html_from_url_response(url: str):
     header = head_user_agent()
     response = requests.get(url=url, headers=header)
     if response.status_code != 200:
-        settings.logging.error(
-            f"Ошибка в ({response}) - Проблема с доступностью сайта"
+        settings.logging.exception(
+            f"Ошибка в ({response}) - Проблема с доступностью сайта",
+            stack_info=True,
         )
         raise ConnectionError(
             f"Проблемы с соединением: код ответа {response.status_code}!"
@@ -65,9 +66,10 @@ def get_predict_price_1_to_14_days(name_crypto: str) -> str:
             .strip()
         )
         if predict_price is None:
-            settings.logging.error(
+            settings.logging.exception(
                 f"Ошибка в ({predict_price}) при парсинге предсказания "
-                "с сайта walletinvestor"
+                "с сайта walletinvestor",
+                stack_info=True,
             )
             raise ValueError(
                 "Проблема с парсингом. Значение цены не может быть пустым"

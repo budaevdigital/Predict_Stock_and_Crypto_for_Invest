@@ -157,7 +157,9 @@ def stock_to_graph(
                         alpha=1,
                     )
     except Exception as error:
-        settings.logging.error(f"Ошибка ({error}) при построении графиков")
+        settings.logging.exception(
+            f"Ошибка ({error}) при построении графиков", stack_info=True
+        )
     plt.legend(loc="best")
     name_pic = function + ".png"
     current_img = path.join(settings.IMG_DIR, name_pic)

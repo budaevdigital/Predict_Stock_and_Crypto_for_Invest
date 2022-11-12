@@ -45,8 +45,9 @@ def search_existing_field_in_db(
         # fetcall() - найдёт все совпадения
         result = cursor.fetchone()
     except sqlite3.OperationalError as OperationalError:
-        settings.logging.error(
-            f"Ошибка при запросе к базе данных {OperationalError}"
+        settings.logging.exception(
+            f"Ошибка при запросе к базе данных {OperationalError}",
+            stack_info=True,
         )
         connect.close()
         return False
@@ -82,8 +83,9 @@ def update_cryptos_list_in_db(lists_cryptos: dict[str, str]) -> bool:
         """
         )
     except Exception as error:
-        settings.logging.error(
-            f"Ошибка ({error}) при обновлении списка криптовалют"
+        settings.logging.exception(
+            f"Ошибка ({error}) при обновлении списка криптовалют",
+            stack_info=True,
         )
     for count in range(len(lists_cryptos)):
         if lists_cryptos[count]["name"] and lists_cryptos[count]["symbol"]:
@@ -95,8 +97,9 @@ def update_cryptos_list_in_db(lists_cryptos: dict[str, str]) -> bool:
                     "INSERT INTO cryptos (name, symbol) VALUES(?, ?);", [data]
                 )
             except sqlite3.IntegrityError as IntegrityError:
-                settings.logging.info(
-                    f"({IntegrityError}) - такая криптавалюта уже есть в базе"
+                settings.logging.exception(
+                    f"({IntegrityError}) - такая криптавалюта уже есть в базе",
+                    stack_info=True,
                 )
                 continue
             is_update = True
@@ -141,8 +144,9 @@ def create_new_user(
         """
         )
     except Exception as error:
-        settings.logging.error(
-            f"Ошибка ({error}) при добавлении нового пользователя"
+        settings.logging.exception(
+            f"Ошибка ({error}) при добавлении нового пользователя",
+            stack_info=True,
         )
     # если данных для записи много, то нужно использовать
     # 'executemany' вместо обычной 'execute'
@@ -155,8 +159,9 @@ def create_new_user(
             (add_user),
         )
     except sqlite3.IntegrityError as IntegrityError:
-        settings.logging.info(
-            f"({IntegrityError}) - такой пользователь уже существует!"
+        settings.logging.exception(
+            f"({IntegrityError}) - такой пользователь уже существует!",
+            stack_info=True,
         )
         connect.close()
         return False
@@ -186,9 +191,10 @@ def search_duplicate_watch_crypto(cryptos_id: int, user_id: int) -> bool:
             (cryptos_id, user_id),
         )
     except Exception as error:
-        settings.logging.error(
+        settings.logging.exception(
             f"Ошибка ({error}) при поиске дубликатов записей в "
-            "избранных криптовалютах"
+            "избранных криптовалютах",
+            stack_info=True,
         )
     result = cursor.fetchone()
     # при fetchone(), если ничего не найдённо, возвращается NoneType,
@@ -235,8 +241,9 @@ def add_new_crypto_in_db_for_watch(userid: int, symbol: str) -> bool:
             """
             )
         except Exception as error:
-            settings.logging.error(
-                f"Ошибка ({error}) при создании БД для избранных криптовалют"
+            settings.logging.exception(
+                f"Ошибка ({error}) при создании БД для избранных криптовалют",
+                stack_info=True,
             )
         is_duplicate = search_duplicate_watch_crypto(symbol[0], user[0])
         if not is_duplicate:
@@ -249,9 +256,10 @@ def add_new_crypto_in_db_for_watch(userid: int, symbol: str) -> bool:
                     (symbol[0], symbol[2], user[0]),
                 )
             except sqlite3.IntegrityError as IntegrityError:
-                settings.logging.info(
+                settings.logging.exception(
                     f"({IntegrityError}) - такая запись в избранных "
-                    "криптавалютах уже существует!"
+                    "криптавалютах уже существует!",
+                    stack_info=True,
                 )
                 connect.close()
                 return False
@@ -273,8 +281,9 @@ def reading_crypto_in_watchlist(tg_user_id: int) -> Union[list, bool]:
             (tg_user_id,),
         )
     except Exception as error:
-        settings.logging.error(
-            f"Ошибка ({error}) при чтении записей в избранных криптовалютах"
+        settings.logging.exception(
+            f"Ошибка ({error}) при чтении записей в избранных криптовалютах",
+            stack_info=True,
         )
     # fetcall() - найдёт все совпадения
     result = cursor.fetchall()
@@ -314,8 +323,9 @@ def delete_crypto_from_watch_list(userid: int, symbol: str) -> bool:
                 (user[0], symbol[0]),
             )
         except Exception as error:
-            settings.logging.error(
-                f"Ошибка ({error}) при удалении криптовалюты из избранных"
+            settings.logging.exception(
+                f"Ошибка ({error}) при удалении криптовалюты из избранных",
+                stack_info=True,
             )
             connect.close()
             return False

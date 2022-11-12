@@ -76,7 +76,9 @@ def main():
         tg_bot.updater.start_polling()
         tg_bot.updater.idle()
     except Exception as error:
-        settings.logging.error(f"Ошибка {error} в основном блоке программы")
+        settings.logging.exception(
+            f"Ошибка {error} в основном блоке программы", stack_info=True
+        )
 
 
 if __name__ == "__main__":
